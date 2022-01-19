@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 from pybaseball import playerid_lookup, statcast_pitcher
 
 playerid_lookup('cole', 'gerrit')
@@ -76,10 +82,10 @@ nola.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated
 nola['is_strike'] = [1 if x != 'B' else 0 for x in nola['type']]
 nola['pitch_count'] = nola[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
 
-nola['plate_-x'] = -cole['plate_x']
-nola['pfx_-x'] = -cole['pfx_x']
-nola['pfx_-x'] = 12 * cole['pfx_-x']
-nola['pfx_z'] = 12 * cole['pfx_z']
+nola['plate_-x'] = -nola['plate_x']
+nola['pfx_-x'] = -nola['pfx_x']
+nola['pfx_-x'] = 12 * nola['pfx_-x']
+nola['pfx_z'] = 12 * nola['pfx_z']
 
 nola['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
                             ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
@@ -102,10 +108,10 @@ fried.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecate
 fried['is_strike'] = [1 if x != 'B' else 0 for x in fried['type']]
 fried['pitch_count'] = fried[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
 
-fried['plate_-x'] = -cole['plate_x']
-fried['pfx_-x'] = -cole['pfx_x']
-fried['pfx_-x'] = 12 * cole['pfx_-x']
-fried['pfx_z'] = 12 * cole['pfx_z']
+fried['plate_-x'] = -fried['plate_x']
+fried['pfx_-x'] = -fried['pfx_x']
+fried['pfx_-x'] = 12 * fried['pfx_-x']
+fried['pfx_z'] = 12 * fried['pfx_z']
 
 fried['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
                             ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
@@ -114,3 +120,4 @@ fried['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'f
 fried['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in fried['description']]
 
 fried.to_csv('./data/max-fried.csv')
+
