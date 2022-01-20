@@ -1,1 +1,1 @@
-# red-sox-scouting-report
+# pitcher-scouting-report
