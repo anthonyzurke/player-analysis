@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 from pybaseball import playerid_lookup, statcast_pitcher, statcast_batter
 
 playerid_lookup('cole', 'gerrit')
@@ -193,4 +187,3 @@ judge['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'f
 judge['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in judge['description']]
 
 judge.to_csv('./data/aaron-judge.csv')
-
