@@ -1,189 +1,212 @@
 from pybaseball import playerid_lookup, statcast_pitcher, statcast_batter
 
-playerid_lookup('cole', 'gerrit')
+# Pitchers
 
-cole = statcast_pitcher('2021-04-01', '2021-10-04', 543037)
-print(cole.shape)
+playerid_lookup('Kershaw', 'Clayton')
 
-cole.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
+kershaw = statcast_pitcher('2021-04-01', '2021-10-04', 477132)
+#print(kershaw.shape)
+
+kershaw.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                      'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
                      'umpire', 'sv_id'], inplace = True)
 # Create is_strike column
-cole['is_strike'] = [1 if x != 'B' else 0 for x in cole['type']]
+kershaw['is_strike'] = [1 if x != 'B' else 0 for x in kershaw['type']]
 # Create pitch_count column
-cole['pitch_count'] = cole[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
+kershaw['pitch_count'] = kershaw[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
 
 # Switch from catcher's perspective to pitcher's perspective
 # Catcher's POV: (plate_x, plate_z)
 # Pitcher's POV: (plate_-x, plate_z)
-cole['plate_-x'] = -cole['plate_x']
+kershaw['plate_-x'] = -kershaw['plate_x']
 # Switch HB to perspective of pitcher
 # Catcher's POV: (pfx_x, pfx_z)
 # Pitcher's POV: (pfx_-x, pfx_z)
-cole['pfx_-x'] = -cole['pfx_x']
+kershaw['pfx_-x'] = -kershaw['pfx_x']
 # HB and VB in feet should be in inches (*12)
-#cole['pfx_x'] = 12 * cole['pfx_x']
-cole['pfx_-x'] = 12 * cole['pfx_-x']
-cole['pfx_z'] = 12 * cole['pfx_z']
+#kershaw['pfx_x'] = 12 * kershaw['pfx_x']
+kershaw['pfx_-x'] = 12 * kershaw['pfx_-x']
+kershaw['pfx_z'] = 12 * kershaw['pfx_z']
+# Add bauer_units column
+kershaw['bauer_units'] = kershaw['release_spin_rate'] / kershaw['release_speed']
 
 # Replace values
-cole['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
+kershaw['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
                             ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
 # Make all events that aren't hits, outs
-cole['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
+kershaw['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
                         'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
 # make swing_miss column
-cole['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in cole['description']]
+kershaw['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in kershaw['description']]
 
-cole.to_csv('./data/gerrit-cole.csv')
+kershaw.to_csv('./data/clayton-kershaw.csv')
 
-playerid_lookup('chapman', 'aroldis')
-chapman = statcast_pitcher('2021-04-01', '2021-10-04', 547973)
-print(chapman.shape)
-chapman.head()
+playerid_lookup('scherzer', 'max')
+scherzer = statcast_pitcher('2021-04-01', '2021-10-04', 453286)
+#print(scherzer.shape)
 
-chapman.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
+scherzer.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                       'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
                       'umpire', 'sv_id'], inplace = True)
 
-chapman['is_strike'] = [1 if x != 'B' else 0 for x in chapman['type']]
-chapman['pitch_count'] = chapman[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
+scherzer['is_strike'] = [1 if x != 'B' else 0 for x in scherzer['type']]
+scherzer['pitch_count'] = scherzer[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
 
-chapman['plate_-x'] = -chapman['plate_x']
-chapman['pfx_-x'] = -chapman['pfx_x']
-chapman['pfx_-x'] = 12 * chapman['pfx_-x']
-chapman['pfx_z'] = 12 * chapman['pfx_z']
+scherzer['plate_-x'] = -scherzer['plate_x']
+scherzer['pfx_-x'] = -scherzer['pfx_x']
+scherzer['pfx_-x'] = 12 * scherzer['pfx_-x']
+scherzer['pfx_z'] = 12 * scherzer['pfx_z']
+scherzer['bauer_units'] = scherzer['release_spin_rate'] / scherzer['release_speed']
 
-chapman['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
+scherzer['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
                             ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
-chapman['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
+scherzer['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
                         'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
-chapman['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in chapman['description']]
+scherzer['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in scherzer['description']]
 
-chapman.to_csv('./data/aroldis-chapman.csv')
+scherzer.to_csv('./data/max-scherzer.csv')
 
-playerid_lookup('wainwright', 'adam')
-wain = statcast_pitcher('2021-04-01', '2021-10-04', 425794)
-print(wain.shape)
-wain.head()
+playerid_lookup('kimbrel', 'craig')
+kimbrel = statcast_pitcher('2021-04-01', '2021-10-04', 518886)
+#print(kimbrel.shape)
 
-wain.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
+kimbrel.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                      'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
                      'umpire', 'sv_id'], inplace = True)
 
-wain['is_strike'] = [1 if x != 'B' else 0 for x in wain['type']]
-wain['pitch_count'] = wain[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
+kimbrel['is_strike'] = [1 if x != 'B' else 0 for x in kimbrel['type']]
+kimbrel['pitch_count'] = kimbrel[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
 
-wain['plate_-x'] = -wain['plate_x']
-wain['pfx_-x'] = -wain['pfx_x']
-wain['pfx_-x'] = 12 * wain['pfx_-x']
-wain['pfx_z'] = 12 * wain['pfx_z']
+kimbrel['plate_-x'] = -kimbrel['plate_x']
+kimbrel['pfx_-x'] = -kimbrel['pfx_x']
+kimbrel['pfx_-x'] = 12 * kimbrel['pfx_-x']
+kimbrel['pfx_z'] = 12 * kimbrel['pfx_z']
+kimbrel['bauer_units'] = kimbrel['release_spin_rate'] / kimbrel['release_speed']
 
-wain['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
+kimbrel['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
                             ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
-wain['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
+kimbrel['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
                         'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
-wain['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in wain['description']]
+kimbrel['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in kimbrel['description']]
 
-wain.to_csv('./data/adam-wainwright.csv')
+kimbrel.to_csv('./data/craig-kimbrel.csv')
 
-playerid_lookup('hicks', 'jordan')
+playerid_lookup('doolittle', 'sean')
+doolittle = statcast_pitcher('2019-03-28', '2019-9-29', 448281)
+#print(doolittle.shape)
 
-hicks = statcast_pitcher('2019-03-28', '2019-9-29', 663855)
-print(hicks.shape)
-hicks.head()
-
-hicks.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
+doolittle.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                       'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
                       'umpire', 'sv_id'], inplace = True)
 
-hicks['is_strike'] = [1 if x != 'B' else 0 for x in hicks['type']]
-hicks['pitch_count'] = hicks[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
+doolittle['is_strike'] = [1 if x != 'B' else 0 for x in doolittle['type']]
+doolittle['pitch_count'] = doolittle[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
 
-hicks['plate_-x'] = -hicks['plate_x']
-hicks['pfx_-x'] = -hicks['pfx_x']
-hicks['pfx_-x'] = 12 * hicks['pfx_-x']
-hicks['pfx_z'] = 12 * hicks['pfx_z']
+doolittle['plate_-x'] = -doolittle['plate_x']
+doolittle['pfx_-x'] = -doolittle['pfx_x']
+doolittle['pfx_-x'] = 12 * doolittle['pfx_-x']
+doolittle['pfx_z'] = 12 * doolittle['pfx_z']
+doolittle['bauer_units'] = doolittle['release_spin_rate'] / doolittle['release_speed']
 
-hicks['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
+doolittle['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
                              ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
-hicks['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
+doolittle['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
                          'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
-hicks['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in hicks['description']]
+doolittle['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in doolittle['description']]
 
-hicks.to_csv('./data/jordan-hicks.csv')
+doolittle.to_csv('./data/sean-doolittle.csv')
 
-playerid_lookup('lemahieu', 'dj')
-lemahieu = statcast_batter('2021-04-01', '2021-10-04', 518934)
-print(lemahieu.shape)
-lemahieu.head()
+# Hitters
 
-lemahieu.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
+playerid_lookup('harper', 'bryce')
+harper = statcast_batter('2021-04-01', '2021-10-04', 547180)
+#print(harper.shape)
+
+harper.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                          'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
                          'umpire', 'sv_id'], inplace = True)
 
-lemahieu['is_strike'] = [1 if x != 'B' else 0 for x in lemahieu['type']]
-lemahieu['pitch_count'] = lemahieu[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
+harper['is_strike'] = [1 if x != 'B' else 0 for x in harper['type']]
+harper['pitch_count'] = harper[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
 
-lemahieu['plate_-x'] = -lemahieu['plate_x']
-lemahieu['pfx_-x'] = -lemahieu['pfx_x']
-lemahieu['pfx_-x'] = 12 * lemahieu['pfx_-x']
-lemahieu['pfx_z'] = 12 * lemahieu['pfx_z']
+harper['plate_-x'] = -harper['plate_x']
+harper['pfx_-x'] = -harper['pfx_x']
+harper['pfx_-x'] = 12 * harper['pfx_-x']
+harper['pfx_z'] = 12 * harper['pfx_z']
 
-lemahieu['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
+harper['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
                              ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
-lemahieu['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
+harper['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
                          'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
-lemahieu['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in lemahieu['description']]
+harper['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in harper['description']]
 
-lemahieu.to_csv('./data/dj-lemahieu.csv')
+# Feature engineer first_pitch_take column by taking count and if pitch was called a strike
+harper['first_pitch_take'] = [1 if x == '0-0' and y == 'called_strike' else 0 for (x, y) 
+                              in zip(harper['pitch_count'], harper['description'])]
+# feature engineer first_pitch_swing column by taking count, if launch speed is > 0 or if swing_miss = 1
+harper['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for (x, y, z) 
+                               in zip(harper['pitch_count'], harper['launch_speed'], harper['swing_miss'])]
 
-playerid_lookup('stanton', 'giancarlo')
-stanton = statcast_batter('2021-04-01', '2021-10-04', 519317)
-print(stanton.shape)
-stanton.head()
+harper.to_csv('./data/bryce-harper.csv')
 
-stanton.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
+playerid_lookup('swanson', 'dansby')
+swanson = statcast_batter('2021-04-01', '2021-10-04', 621020)
+#print(swanson.shape)
+
+swanson.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                          'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
                          'umpire', 'sv_id'], inplace = True)
 
-stanton['is_strike'] = [1 if x != 'B' else 0 for x in stanton['type']]
-stanton['pitch_count'] = stanton[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
+swanson['is_strike'] = [1 if x != 'B' else 0 for x in swanson['type']]
+swanson['pitch_count'] = swanson[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
 
-stanton['plate_-x'] = -stanton['plate_x']
-stanton['pfx_-x'] = -stanton['pfx_x']
-stanton['pfx_-x'] = 12 * stanton['pfx_-x']
-stanton['pfx_z'] = 12 * stanton['pfx_z']
+swanson['plate_-x'] = -swanson['plate_x']
+swanson['pfx_-x'] = -swanson['pfx_x']
+swanson['pfx_-x'] = 12 * swanson['pfx_-x']
+swanson['pfx_z'] = 12 * swanson['pfx_z']
 
-stanton['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
+swanson['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
                              ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
-stanton['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
+swanson['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
                          'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
-stanton['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in stanton['description']]
+swanson['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in swanson['description']]
+swanson['first_pitch_take'] = [1 if x == '0-0' and y == 'called_strike' else 0 for (x, y) 
+                                in zip(swanson['pitch_count'], 
+                                       swanson['description'])]
+swanson['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for (x, y, z) 
+                                 in zip(swanson['pitch_count'], 
+                                        swanson['launch_speed'],
+                                        swanson['swing_miss'])]
 
-stanton.to_csv('./data/giancarlo-stanton.csv')
+swanson.to_csv('./data/dansby-swanson.csv')
 
-playerid_lookup('judge', 'aaron')
-judge = statcast_batter('2021-04-01', '2021-10-04', 592450)
-print(judge.shape)
-judge.head()
+playerid_lookup('gallo', 'joey')
+gallo = statcast_batter('2021-04-01', '2021-10-04', 608336)
+#print(gallo.shape)
 
-judge.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
+gallo.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                          'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
                          'umpire', 'sv_id'], inplace = True)
 
-judge['is_strike'] = [1 if x != 'B' else 0 for x in judge['type']]
-judge['pitch_count'] = judge[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
+gallo['is_strike'] = [1 if x != 'B' else 0 for x in gallo['type']]
+gallo['pitch_count'] = gallo[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
 
-judge['plate_-x'] = -judge['plate_x']
-judge['pfx_-x'] = -judge['pfx_x']
-judge['pfx_-x'] = 12 * judge['pfx_-x']
-judge['pfx_z'] = 12 * judge['pfx_z']
+gallo['plate_-x'] = -gallo['plate_x']
+gallo['pfx_-x'] = -gallo['pfx_x']
+gallo['pfx_-x'] = 12 * gallo['pfx_-x']
+gallo['pfx_z'] = 12 * gallo['pfx_z']
 
-judge['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
+gallo['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
                              ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
-judge['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
+gallo['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
                          'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
-judge['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in judge['description']]
+gallo['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in gallo['description']]
+gallo['first_pitch_take'] = [1 if x == '0-0' and y == 'called_strike' else 0 for (x, y) 
+                                in zip(gallo['pitch_count'], 
+                                       gallo['description'])]
+gallo['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for (x, y, z) 
+                                 in zip(gallo['pitch_count'], 
+                                        gallo['launch_speed'],
+                                        gallo['swing_miss'])]
 
-judge.to_csv('./data/aaron-judge.csv')
+gallo.to_csv('./data/joey-gallo.csv')

@@ -1,1 +1,1 @@
-# pitcher-scouting-report
+# Pitcher-Scouting-Report
