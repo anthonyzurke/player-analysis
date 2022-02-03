@@ -1,15 +1,24 @@
-from pybaseball import playerid_lookup, statcast_pitcher, statcast_batter
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+from pybaseball import (playerid_lookup, statcast, statcast_pitcher, statcast_pitcher_spin, statcast_batter, 
+plot_stadium)
 
 # Pitchers
 
-playerid_lookup('Kershaw', 'Clayton')
+playerid_lookup('kershaw', 'clayton')
 
-kershaw = statcast_pitcher('2021-04-01', '2021-10-04', 477132)
-#print(kershaw.shape)
+ck = statcast_pitcher('2021-04-01', '2021-05-30', 477132)
+ck2 = statcast_pitcher_spin.statcast_pitcher_spin('2021-05-31','2021-10-04', 477132)
+kershaw = pd.concat([ck, ck2])
+# print(kershaw.shape)
 
 kershaw.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
-                     'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
-                     'umpire', 'sv_id'], inplace = True)
+                        'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
+                        'umpire', 'sv_id'], inplace = True)
 # Create is_strike column
 kershaw['is_strike'] = [1 if x != 'B' else 0 for x in kershaw['type']]
 # Create pitch_count column
@@ -27,6 +36,11 @@ kershaw['pfx_-x'] = -kershaw['pfx_x']
 #kershaw['pfx_x'] = 12 * kershaw['pfx_x']
 kershaw['pfx_-x'] = 12 * kershaw['pfx_-x']
 kershaw['pfx_z'] = 12 * kershaw['pfx_z']
+
+# Add spin_eff and true_spin
+kershaw['spin_eff'] =  round(np.cos(np.radians(kershaw['theta'])), 2)
+kershaw['true_spin'] = kershaw['release_spin_rate'] * kershaw['spin_eff']
+
 # Add bauer_units column
 kershaw['bauer_units'] = kershaw['release_spin_rate'] / kershaw['release_speed']
 
@@ -42,8 +56,11 @@ kershaw['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in kershaw['de
 kershaw.to_csv('./data/clayton-kershaw.csv')
 
 playerid_lookup('scherzer', 'max')
-scherzer = statcast_pitcher('2021-04-01', '2021-10-04', 453286)
-#print(scherzer.shape)
+
+ms = statcast_pitcher('2021-04-01', '2021-05-30', 453286)
+ms2 = statcast_pitcher_spin.statcast_pitcher_spin('2021-05-31','2021-10-04', 453286)
+scherzer = pd.concat([ms, ms2])
+# print(scherzer.shape)
 
 scherzer.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                       'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
@@ -56,6 +73,10 @@ scherzer['plate_-x'] = -scherzer['plate_x']
 scherzer['pfx_-x'] = -scherzer['pfx_x']
 scherzer['pfx_-x'] = 12 * scherzer['pfx_-x']
 scherzer['pfx_z'] = 12 * scherzer['pfx_z']
+
+scherzer['spin_eff'] =  round(np.cos(np.radians(scherzer['theta'])), 2)
+scherzer['true_spin'] = scherzer['release_spin_rate'] * scherzer['spin_eff']
+
 scherzer['bauer_units'] = scherzer['release_spin_rate'] / scherzer['release_speed']
 
 scherzer['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
@@ -67,8 +88,11 @@ scherzer['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in scherzer['
 scherzer.to_csv('./data/max-scherzer.csv')
 
 playerid_lookup('kimbrel', 'craig')
-kimbrel = statcast_pitcher('2021-04-01', '2021-10-04', 518886)
-#print(kimbrel.shape)
+
+craig = statcast_pitcher('2021-04-01', '2021-08-31', 518886)
+craig2 = statcast_pitcher_spin.statcast_pitcher_spin('2021-09-01','2021-10-04', 518886)
+kimbrel = pd.concat([craig, craig2])
+# print(kimbrel.shape)
 
 kimbrel.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                      'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
@@ -81,6 +105,10 @@ kimbrel['plate_-x'] = -kimbrel['plate_x']
 kimbrel['pfx_-x'] = -kimbrel['pfx_x']
 kimbrel['pfx_-x'] = 12 * kimbrel['pfx_-x']
 kimbrel['pfx_z'] = 12 * kimbrel['pfx_z']
+
+kimbrel['spin_eff'] =  round(np.cos(np.radians(kimbrel['theta'])), 2)
+kimbrel['true_spin'] = kimbrel['release_spin_rate'] * kimbrel['spin_eff']
+
 kimbrel['bauer_units'] = kimbrel['release_spin_rate'] / kimbrel['release_speed']
 
 kimbrel['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
@@ -92,8 +120,11 @@ kimbrel['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in kimbrel['de
 kimbrel.to_csv('./data/craig-kimbrel.csv')
 
 playerid_lookup('doolittle', 'sean')
-doolittle = statcast_pitcher('2019-03-28', '2019-9-29', 448281)
-#print(doolittle.shape)
+
+sd = statcast_pitcher('2021-04-01', '2021-07-30', 448281)
+sd2 = statcast_pitcher_spin.statcast_pitcher_spin('2021-07-31','2021-10-04', 448281)
+doolittle = pd.concat([sd, sd2])
+# print(doolittle.shape)
 
 doolittle.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                       'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
@@ -106,6 +137,10 @@ doolittle['plate_-x'] = -doolittle['plate_x']
 doolittle['pfx_-x'] = -doolittle['pfx_x']
 doolittle['pfx_-x'] = 12 * doolittle['pfx_-x']
 doolittle['pfx_z'] = 12 * doolittle['pfx_z']
+
+doolittle['spin_eff'] =  round(np.cos(np.radians(doolittle['theta'])), 2)
+doolittle['true_spin'] = doolittle['release_spin_rate'] * doolittle['spin_eff']
+
 doolittle['bauer_units'] = doolittle['release_spin_rate'] / doolittle['release_speed']
 
 doolittle['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
@@ -119,6 +154,7 @@ doolittle.to_csv('./data/sean-doolittle.csv')
 # Hitters
 
 playerid_lookup('harper', 'bryce')
+
 harper = statcast_batter('2021-04-01', '2021-10-04', 547180)
 #print(harper.shape)
 
@@ -150,6 +186,7 @@ harper['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for (
 harper.to_csv('./data/bryce-harper.csv')
 
 playerid_lookup('swanson', 'dansby')
+
 swanson = statcast_batter('2021-04-01', '2021-10-04', 621020)
 #print(swanson.shape)
 
@@ -181,6 +218,7 @@ swanson['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for 
 swanson.to_csv('./data/dansby-swanson.csv')
 
 playerid_lookup('gallo', 'joey')
+
 gallo = statcast_batter('2021-04-01', '2021-10-04', 608336)
 #print(gallo.shape)
 
@@ -210,3 +248,4 @@ gallo['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for (x
                                         gallo['swing_miss'])]
 
 gallo.to_csv('./data/joey-gallo.csv')
+
