@@ -32,9 +32,11 @@ kershaw['pitch_count'] = kershaw[['balls', 'strikes']].astype(str).agg('-'.join,
 # Pitcher's POV: (plate_-x, plate_z)
 kershaw['plate_-x'] = -kershaw['plate_x']
 # Switch HB to perspective of pitcher
+# Switch HB due to Magnus to perspective of pitcher
 # Catcher's POV: (pfx_x, pfx_z)
 # Pitcher's POV: (pfx_-x, pfx_z)
 kershaw['pfx_-x'] = -kershaw['pfx_x']
+kershaw['M-x'] = -kershaw['Mx']
 # HB and VB in feet should be in inches (*12)
 #kershaw['pfx_x'] = 12 * kershaw['pfx_x']
 kershaw['pfx_-x'] = 12 * kershaw['pfx_-x']
@@ -79,6 +81,7 @@ scherzer['pitch_count'] = scherzer[['balls', 'strikes']].astype(str).agg('-'.joi
 
 scherzer['plate_-x'] = -scherzer['plate_x']
 scherzer['pfx_-x'] = -scherzer['pfx_x']
+scherzer['M-x'] = -scherzer['Mx']
 scherzer['pfx_-x'] = 12 * scherzer['pfx_-x']
 scherzer['pfx_z'] = 12 * scherzer['pfx_z']
 
@@ -116,6 +119,7 @@ kimbrel['pitch_count'] = kimbrel[['balls', 'strikes']].astype(str).agg('-'.join,
 
 kimbrel['plate_-x'] = -kimbrel['plate_x']
 kimbrel['pfx_-x'] = -kimbrel['pfx_x']
+kimbrel['M-x'] = -kimbrel['Mx']
 kimbrel['pfx_-x'] = 12 * kimbrel['pfx_-x']
 kimbrel['pfx_z'] = 12 * kimbrel['pfx_z']
 
@@ -153,6 +157,7 @@ doolittle['pitch_count'] = doolittle[['balls', 'strikes']].astype(str).agg('-'.j
 
 doolittle['plate_-x'] = -doolittle['plate_x']
 doolittle['pfx_-x'] = -doolittle['pfx_x']
+doolittle['M-x'] = -doolittle['Mx']
 doolittle['pfx_-x'] = 12 * doolittle['pfx_-x']
 doolittle['pfx_z'] = 12 * doolittle['pfx_z']
 
