@@ -18,7 +18,10 @@ kershaw = pd.concat([ck, ck2])
 
 kershaw.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
                         'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
-                        'umpire', 'sv_id'], inplace = True)
+                        'umpire', 'sv_id', 'game_type','pitcher.1', 'fielder_2.1', 
+                        'fielder_3', 'fielder_4', 'fielder_5', 'fielder_6', 'fielder_7', 
+                        'fielder_8', 'fielder_9', 'bat_score', 'fld_score', 'post_bat_score', 
+                        'post_fld_score'], inplace = True)
 # Create is_strike column
 kershaw['is_strike'] = [1 if x != 'B' else 0 for x in kershaw['type']]
 # Create pitch_count column
@@ -46,10 +49,12 @@ kershaw['bauer_units'] = kershaw['release_spin_rate'] / kershaw['release_speed']
 
 # Replace values
 kershaw['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
-                            ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+                               ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+
 # Make all events that aren't hits, outs
 kershaw['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
-                        'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+                           'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+
 # make swing_miss column
 kershaw['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in kershaw['description']]
 
@@ -63,8 +68,11 @@ scherzer = pd.concat([ms, ms2])
 # print(scherzer.shape)
 
 scherzer.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
-                      'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
-                      'umpire', 'sv_id'], inplace = True)
+                         'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
+                         'umpire', 'sv_id', 'game_type','pitcher.1', 'fielder_2.1', 
+                         'fielder_3', 'fielder_4', 'fielder_5', 'fielder_6', 'fielder_7', 
+                         'fielder_8', 'fielder_9', 'bat_score', 'fld_score', 'post_bat_score', 
+                         'post_fld_score'], inplace = True)
 
 scherzer['is_strike'] = [1 if x != 'B' else 0 for x in scherzer['type']]
 scherzer['pitch_count'] = scherzer[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
@@ -80,9 +88,11 @@ scherzer['true_spin'] = scherzer['release_spin_rate'] * scherzer['spin_eff']
 scherzer['bauer_units'] = scherzer['release_spin_rate'] / scherzer['release_speed']
 
 scherzer['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
-                            ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+                                ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+
 scherzer['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
-                        'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+                            'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+
 scherzer['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in scherzer['description']]
 
 scherzer.to_csv('./data/max-scherzer.csv')
@@ -95,8 +105,11 @@ kimbrel = pd.concat([craig, craig2])
 # print(kimbrel.shape)
 
 kimbrel.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
-                     'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
-                     'umpire', 'sv_id'], inplace = True)
+                        'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
+                        'umpire', 'sv_id', 'game_type','pitcher.1', 'fielder_2.1', 
+                        'fielder_3', 'fielder_4', 'fielder_5', 'fielder_6', 'fielder_7', 
+                        'fielder_8', 'fielder_9', 'bat_score', 'fld_score', 'post_bat_score', 
+                        'post_fld_score'], inplace = True)
 
 kimbrel['is_strike'] = [1 if x != 'B' else 0 for x in kimbrel['type']]
 kimbrel['pitch_count'] = kimbrel[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
@@ -112,9 +125,11 @@ kimbrel['true_spin'] = kimbrel['release_spin_rate'] * kimbrel['spin_eff']
 kimbrel['bauer_units'] = kimbrel['release_spin_rate'] / kimbrel['release_speed']
 
 kimbrel['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
-                            ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+                               ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+
 kimbrel['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
-                        'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+                           'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+
 kimbrel['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in kimbrel['description']]
 
 kimbrel.to_csv('./data/craig-kimbrel.csv')
@@ -127,8 +142,11 @@ doolittle = pd.concat([sd, sd2])
 # print(doolittle.shape)
 
 doolittle.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
-                      'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
-                      'umpire', 'sv_id'], inplace = True)
+                        'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
+                        'umpire', 'sv_id', 'game_type','pitcher.1', 'fielder_2.1', 
+                        'fielder_3', 'fielder_4', 'fielder_5', 'fielder_6', 'fielder_7', 
+                        'fielder_8', 'fielder_9', 'bat_score', 'fld_score', 'post_bat_score', 
+                        'post_fld_score'], inplace = True)
 
 doolittle['is_strike'] = [1 if x != 'B' else 0 for x in doolittle['type']]
 doolittle['pitch_count'] = doolittle[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
@@ -144,9 +162,11 @@ doolittle['true_spin'] = doolittle['release_spin_rate'] * doolittle['spin_eff']
 doolittle['bauer_units'] = doolittle['release_spin_rate'] / doolittle['release_speed']
 
 doolittle['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
-                             ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+                                 ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+
 doolittle['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
-                         'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+                             'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+
 doolittle['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in doolittle['description']]
 
 doolittle.to_csv('./data/sean-doolittle.csv')
@@ -159,8 +179,11 @@ harper = statcast_batter('2021-04-01', '2021-10-04', 547180)
 #print(harper.shape)
 
 harper.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
-                         'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
-                         'umpire', 'sv_id'], inplace = True)
+                       'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
+                       'umpire', 'sv_id', 'game_type','pitcher.1', 'fielder_2.1', 
+                       'fielder_3', 'fielder_4', 'fielder_5', 'fielder_6', 'fielder_7', 
+                       'fielder_8', 'fielder_9', 'bat_score', 'fld_score', 'post_bat_score', 
+                       'post_fld_score'], inplace = True)
 
 harper['is_strike'] = [1 if x != 'B' else 0 for x in harper['type']]
 harper['pitch_count'] = harper[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
@@ -171,9 +194,11 @@ harper['pfx_-x'] = 12 * harper['pfx_-x']
 harper['pfx_z'] = 12 * harper['pfx_z']
 
 harper['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
-                             ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+                              ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+
 harper['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
-                         'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+                          'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+
 harper['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in harper['description']]
 
 # Feature engineer first_pitch_take column by taking count and if pitch was called a strike
@@ -191,8 +216,11 @@ swanson = statcast_batter('2021-04-01', '2021-10-04', 621020)
 #print(swanson.shape)
 
 swanson.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
-                         'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
-                         'umpire', 'sv_id'], inplace = True)
+                        'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
+                        'umpire', 'sv_id', 'game_type','pitcher.1', 'fielder_2.1', 
+                        'fielder_3', 'fielder_4', 'fielder_5', 'fielder_6', 'fielder_7', 
+                        'fielder_8', 'fielder_9', 'bat_score', 'fld_score', 'post_bat_score', 
+                        'post_fld_score'], inplace = True)
 
 swanson['is_strike'] = [1 if x != 'B' else 0 for x in swanson['type']]
 swanson['pitch_count'] = swanson[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
@@ -203,17 +231,18 @@ swanson['pfx_-x'] = 12 * swanson['pfx_-x']
 swanson['pfx_z'] = 12 * swanson['pfx_z']
 
 swanson['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
-                             ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+                               ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+
 swanson['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
-                         'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+                           'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+
 swanson['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in swanson['description']]
+
 swanson['first_pitch_take'] = [1 if x == '0-0' and y == 'called_strike' else 0 for (x, y) 
-                                in zip(swanson['pitch_count'], 
-                                       swanson['description'])]
+                               in zip(swanson['pitch_count'], swanson['description'])]
+
 swanson['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for (x, y, z) 
-                                 in zip(swanson['pitch_count'], 
-                                        swanson['launch_speed'],
-                                        swanson['swing_miss'])]
+                                in zip(swanson['pitch_count'], swanson['launch_speed'], swanson['swing_miss'])]
 
 swanson.to_csv('./data/dansby-swanson.csv')
 
@@ -223,8 +252,11 @@ gallo = statcast_batter('2021-04-01', '2021-10-04', 608336)
 #print(gallo.shape)
 
 gallo.drop(columns = ['spin_dir', 'spin_rate_deprecated', 'break_angle_deprecated', 
-                         'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
-                         'umpire', 'sv_id'], inplace = True)
+                      'break_length_deprecated', 'tfs_deprecated', 'tfs_zulu_deprecated', 
+                      'umpire', 'sv_id', 'game_type','pitcher.1', 'fielder_2.1', 
+                      'fielder_3', 'fielder_4', 'fielder_5', 'fielder_6', 'fielder_7', 
+                      'fielder_8', 'fielder_9', 'bat_score', 'fld_score', 'post_bat_score', 
+                      'post_fld_score'], inplace = True)
 
 gallo['is_strike'] = [1 if x != 'B' else 0 for x in gallo['type']]
 gallo['pitch_count'] = gallo[['balls', 'strikes']].astype(str).agg('-'.join, axis = 1)
@@ -236,16 +268,17 @@ gallo['pfx_z'] = 12 * gallo['pfx_z']
 
 gallo['description'].replace(['blocked_ball', 'foul_tip', 'swinging_strike_blocked', 'foul_bunt'], 
                              ['ball', 'foul', 'swinging_strike', 'foul'], inplace = True)
+
 gallo['events'].replace(['field_out', 'grounded_into_double_play', 'sac_fly', 'force_out', 'hit_by_pitch', 
                          'field_error', 'fielders_choice', 'fielders_choice_out'], 'out', inplace = True)
+
 gallo['swing_miss'] = [1 if x == 'swinging_strike' else 0 for x in gallo['description']]
+
 gallo['first_pitch_take'] = [1 if x == '0-0' and y == 'called_strike' else 0 for (x, y) 
-                                in zip(gallo['pitch_count'], 
-                                       gallo['description'])]
+                             in zip(gallo['pitch_count'], gallo['description'])]
+
 gallo['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for (x, y, z) 
-                                 in zip(gallo['pitch_count'], 
-                                        gallo['launch_speed'],
-                                        gallo['swing_miss'])]
+                              in zip(gallo['pitch_count'], gallo['launch_speed'], gallo['swing_miss'])]
 
 gallo.to_csv('./data/joey-gallo.csv')
 
