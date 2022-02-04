@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 from pybaseball import (playerid_lookup, statcast, statcast_pitcher, statcast_pitcher_spin, statcast_batter, 
 plot_stadium)
 
