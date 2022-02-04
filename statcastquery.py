@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 from pybaseball import (playerid_lookup, statcast, statcast_pitcher, statcast_pitcher_spin, statcast_batter, 
 plot_stadium)
 
@@ -202,6 +196,12 @@ harper['first_pitch_take'] = [1 if x == '0-0' and y == 'called_strike' else 0 fo
 # feature engineer first_pitch_swing column by taking count, if launch speed is > 0 or if swing_miss = 1
 harper['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for (x, y, z) 
                                in zip(harper['pitch_count'], harper['launch_speed'], harper['swing_miss'])]
+# Feature engineer in_zone_take by seeing if pitch was in zone 1-9 and called a strike
+harper['in_zone_take'] = [1 if x < 10 and y == 'called_strike' else 0 for (x, y) 
+                           in zip(harper['zone'], harper['description'])]
+# Feature engineer out_of_zone_chase by seeing if pitch was in zone 11-14 and batter swung and missed
+harper['out_of_zone_chase'] = [1 if x > 10 and y > 0 else 0 for (x, y) 
+                               in zip(harper['zone'], harper['swing_miss'])]
 harper.to_csv('./data/bryce-harper.csv')
 
 playerid_lookup('swanson', 'dansby')
@@ -235,6 +235,10 @@ swanson['first_pitch_take'] = [1 if x == '0-0' and y == 'called_strike' else 0 f
 
 swanson['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for (x, y, z) 
                                 in zip(swanson['pitch_count'], swanson['launch_speed'], swanson['swing_miss'])]
+swanson['in_zone_take'] = [1 if x < 10 and y == 'called_strike' else 0 for (x, y) 
+                           in zip(swanson['zone'], swanson['description'])]
+swanson['out_of_zone_chase'] = [1 if x > 10 and y > 0 else 0 for (x, y) 
+                               in zip(swanson['zone'], swanson['swing_miss'])]
 swanson.to_csv('./data/dansby-swanson.csv')
 
 playerid_lookup('gallo', 'joey')
@@ -268,5 +272,9 @@ gallo['first_pitch_take'] = [1 if x == '0-0' and y == 'called_strike' else 0 for
 
 gallo['first_pitch_swing'] = [1 if x == '0-0' and (y > 0 or z > 0) else 0 for (x, y, z) 
                               in zip(gallo['pitch_count'], gallo['launch_speed'], gallo['swing_miss'])]
+gallo['in_zone_take'] = [1 if x < 10 and y == 'called_strike' else 0 for (x, y) 
+                           in zip(gallo['zone'], gallo['description'])]
+gallo['out_of_zone_chase'] = [1 if x > 10 and y > 0 else 0 for (x, y) 
+                               in zip(gallo['zone'], gallo['swing_miss'])]
 gallo.to_csv('./data/joey-gallo.csv')
 
