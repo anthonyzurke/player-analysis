@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 from pybaseball import (playerid_lookup, statcast, statcast_pitcher, statcast_pitcher_spin, statcast_batter, 
 plot_stadium)
 
@@ -202,6 +208,21 @@ harper['in_zone_take'] = [1 if x < 10 and y == 'called_strike' else 0 for (x, y)
 # Feature engineer out_of_zone_chase by seeing if pitch was in zone 11-14 and batter swung and missed
 harper['out_of_zone_chase'] = [1 if x > 10 and y > 0 else 0 for (x, y) 
                                in zip(harper['zone'], harper['swing_miss'])]
+harper = harper[['pitch_type', 'game_date', 'player_name', 'launch_speed', 'launch_angle', 'hit_distance_sc', 
+                 'hc_x', 'hc_y', 'estimated_ba_using_speedangle', 'estimated_woba_using_speedangle', 
+                 'woba_value', 'woba_denom', 'babip_value', 'iso_value', 'launch_speed_angle', 'type', 
+                 'hit_location', 'bb_type', 'events', 'description', 'des', 'balls', 'strikes','pitch_count', 
+                 'zone', 'is_strike', 'swing_miss', 'first_pitch_take', 'first_pitch_swing', 'in_zone_take', 
+                 'out_of_zone_chase', 'release_speed', 'release_spin_rate', 'spin_axis', 'pfx_x', 'pfx_-x', 
+                 'pfx_z', 'release_pos_x', 'release_pos_z', 'effective_speed', 'release_extension', 
+                 'release_pos_y', 'plate_-x', 'plate_x', 'plate_z',  'on_3b', 'on_2b', 'on_1b', 'outs_when_up', 
+                 'inning', 'inning_topbot', 'fielder_2', 'vx0', 'vy0', 'vz0', 'ax', 'ay', 'az', 'sz_top', 
+                 'sz_bot', 'stand', 'p_throws', 'release_speed', 'release_spin_rate', 'spin_axis', 'pfx_x', 
+                 'pfx_-x', 'pfx_z', 'release_pos_x', 'release_pos_z', 'effective_speed', 'release_extension', 
+                 'release_pos_y', 'plate_-x', 'plate_x', 'plate_z', 'batter', 'pitcher', 'home_team', 
+                 'away_team', 'if_fielding_alignment', 'of_fielding_alignment', 'game_pk', 'at_bat_number', 
+                 'pitch_number', 'pitch_name', 'home_score', 'away_score', 'post_away_score', 'post_home_score', 
+                 'delta_home_win_exp', 'delta_run_exp', 'game_year']]
 harper.to_csv('./data/bryce-harper.csv')
 
 playerid_lookup('swanson', 'dansby')
@@ -239,6 +260,22 @@ swanson['in_zone_take'] = [1 if x < 10 and y == 'called_strike' else 0 for (x, y
                            in zip(swanson['zone'], swanson['description'])]
 swanson['out_of_zone_chase'] = [1 if x > 10 and y > 0 else 0 for (x, y) 
                                in zip(swanson['zone'], swanson['swing_miss'])]
+swanson = swanson[['pitch_type', 'game_date', 'player_name', 'launch_speed', 'launch_angle', 
+                   'hit_distance_sc', 'hc_x', 'hc_y', 'estimated_ba_using_speedangle', 
+                   'estimated_woba_using_speedangle', 'woba_value', 'woba_denom', 'babip_value', 
+                   'iso_value', 'launch_speed_angle', 'type', 'hit_location', 'bb_type', 'events', 
+                   'description', 'des', 'balls', 'strikes','pitch_count', 'zone', 'is_strike', 
+                   'swing_miss', 'first_pitch_take', 'first_pitch_swing', 'in_zone_take', 'out_of_zone_chase', 
+                   'release_speed', 'release_spin_rate', 'spin_axis', 'pfx_x', 'pfx_-x', 'pfx_z', 
+                   'release_pos_x', 'release_pos_z', 'effective_speed', 'release_extension', 'release_pos_y', 
+                   'plate_-x', 'plate_x', 'plate_z',  'on_3b', 'on_2b', 'on_1b', 'outs_when_up', 'inning', 
+                   'inning_topbot', 'fielder_2', 'vx0', 'vy0', 'vz0', 'ax', 'ay', 'az', 'sz_top', 'sz_bot', 
+                   'stand', 'p_throws', 'release_speed', 'release_spin_rate', 'spin_axis', 'pfx_x', 'pfx_-x', 
+                   'pfx_z', 'release_pos_x', 'release_pos_z', 'effective_speed', 'release_extension', 
+                   'release_pos_y', 'plate_-x', 'plate_x', 'plate_z', 'batter', 'pitcher', 'home_team', 
+                   'away_team', 'if_fielding_alignment', 'of_fielding_alignment', 'game_pk', 'at_bat_number', 
+                   'pitch_number', 'pitch_name', 'home_score', 'away_score', 'post_away_score', 
+                   'post_home_score', 'delta_home_win_exp', 'delta_run_exp', 'game_year']]
 swanson.to_csv('./data/dansby-swanson.csv')
 
 playerid_lookup('gallo', 'joey')
@@ -276,5 +313,20 @@ gallo['in_zone_take'] = [1 if x < 10 and y == 'called_strike' else 0 for (x, y)
                            in zip(gallo['zone'], gallo['description'])]
 gallo['out_of_zone_chase'] = [1 if x > 10 and y > 0 else 0 for (x, y) 
                                in zip(gallo['zone'], gallo['swing_miss'])]
+gallo = gallo[['pitch_type', 'game_date', 'player_name', 'launch_speed', 'launch_angle', 'hit_distance_sc', 
+               'hc_x', 'hc_y', 'estimated_ba_using_speedangle', 'estimated_woba_using_speedangle', 
+               'woba_value', 'woba_denom', 'babip_value', 'iso_value', 'launch_speed_angle', 'type', 
+               'hit_location', 'bb_type', 'events', 'description', 'des', 'balls', 'strikes','pitch_count', 
+               'zone', 'is_strike', 'swing_miss', 'first_pitch_take', 'first_pitch_swing', 'in_zone_take', 
+               'out_of_zone_chase', 'release_speed', 'release_spin_rate', 'spin_axis', 'pfx_x', 'pfx_-x', 
+               'pfx_z', 'release_pos_x', 'release_pos_z', 'effective_speed', 'release_extension', 
+               'release_pos_y', 'plate_-x', 'plate_x', 'plate_z',  'on_3b', 'on_2b', 'on_1b', 'outs_when_up', 
+               'inning', 'inning_topbot', 'fielder_2', 'vx0', 'vy0', 'vz0', 'ax', 'ay', 'az', 'sz_top', 
+               'sz_bot', 'stand', 'p_throws', 'release_speed', 'release_spin_rate', 'spin_axis', 'pfx_x', 
+               'pfx_-x', 'pfx_z', 'release_pos_x', 'release_pos_z', 'effective_speed', 'release_extension', 
+               'release_pos_y', 'plate_-x', 'plate_x', 'plate_z', 'batter', 'pitcher', 'home_team', 
+               'away_team', 'if_fielding_alignment', 'of_fielding_alignment', 'game_pk', 'at_bat_number', 
+               'pitch_number', 'pitch_name', 'home_score', 'away_score', 'post_away_score', 'post_home_score', 
+               'delta_home_win_exp', 'delta_run_exp', 'game_year']]
 gallo.to_csv('./data/joey-gallo.csv')
 
