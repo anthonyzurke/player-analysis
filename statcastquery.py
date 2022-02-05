@@ -323,4 +323,3 @@ gallo = gallo[['pitch_type', 'game_date', 'player_name', 'launch_speed', 'launch
                'pitch_number', 'pitch_name', 'home_score', 'away_score', 'post_away_score', 'post_home_score', 
                'delta_home_win_exp', 'delta_run_exp', 'game_year']]
 gallo.to_csv('./data/joey-gallo.csv')
-
