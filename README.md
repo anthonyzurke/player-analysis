@@ -1,18 +1,18 @@
 # Player-Analysis
 ---
 
-# Data Collection
+## Data Collection
 
 I used the pybaseball package to receive statcast hitting and pitching/spin data from Baseball Savant
 
-# Data Dictionary
+## Data Dictionary
 |Feature                         |Description                                |Dataset        |Type    |
 |---                             |---                                        |---            |---     |
 |pitch_type                      |Type of pitch from Statcast                |hitters / pitchers  |object  |
 |game_date                       |Date of the game                           |hitters / pitchers  |object  |
-|release_speed                   |out-of-hand pitch velocity                 |hitters / pitchers  |float64 |
-|release_pos_x                   |Horizontal Release Position of the ball measured in feet from the catcher's perspective |hitters / pitchers | float64
-|release_pos_z                   |Vertical Release Position of the ball measured in feet from the catcher's perspective | hitters / pitchers | float64
+|release_speed                   |Out-of-hand pitch velocity                 |hitters / pitchers  |float64 |
+|release_pos_x       |Horizontal Release Position of the ball measured in feet from the catcher's perspective |hitters / pitchers | float64 |
+|release_pos_z |Vertical Release Position of the ball measured in feet from the catcher's perspective | hitters / pitchers | float64 |
 |player_name                     |Player's name                              |hitters / pitchers |object
 |batter                          |MLB Player Id tied to the play event       |hitters / pitchers |int64
 |pitcher                         |MLB Player Id tied to the play event       |hitters / pitchers |int64
@@ -72,23 +72,23 @@ I used the pybaseball package to receive statcast hitting and pitching/spin data
 |pitch_number            |Total pitch number of the plate appearance    |hitters / pitchers |int64
 |pitch_name               |The name of the pitch derived from the Statcast Data  |hitters / pitchers |object
 |home_score               |Pre-pitch home score   |hitters / pitchers |int64
-|away_score           |Pre-pitch home score   |hitters / pitchers |int64
-|post_away_score        |Post-pitch home score     |hitters / pitchers |int64
-|post_home_score         |Post-pitch away score           |hitters / pitchers | int64
-|if_fielding_alignment   |Infield fielding alignment at the time of the pitch   |hitters / pitchers |object
-|of_fielding_alignment     |Outfield fielding alignment at the time of the pitch  |hitters / pitchers |object
+|away_score         Pre-pitch home score   |hitters / pitchers |int64
+|post_away_score     |Post-pitch home score     |hitters / pitchers |int64
+|post_home_score     |Post-pitch away score           |hitters / pitchers | int64
+|if_fielding_alignment |Infield fielding alignment at the time of the pitch   |hitters / pitchers |object
+|of_fielding_alignment |Outfield fielding alignment at the time of the pitch  |hitters / pitchers |object
 |spin_axis |The Spin Axis in the 2D X-Z plane in degrees from 0 to 360, such that 180 represents a pure backspin fastball and 0 degrees represents a pure topspin (12-6) curveball | hitters / pitchers |float64
-|delta_home_win_exp              |The change in Win Expectancy before the Plate Appearance and after the Plate Appearance |hitters / pitchers | float64
-|delta_run_exp                   |The change in Run Expectancy before the Pitch and after the Pitch |hitters / pitchers |flaot64
+|delta_home_win_exp |The change in Win Expectancy before the Plate Appearance and after the Plate Appearance |hitters / pitchers | float64
+|delta_run_exp  |The change in Run Expectancy before the Pitch and after the Pitch |hitters / pitchers |flaot64
 |Mx |The amount of movement in the x-direction due to the Magnus effect alone. (Positive is towards first base/catcher's right) |hitters / pitchers |float64
 |Mz |The amount of movement in the z-direction due to the Magnus effect alone. (Positive is upwards) |hitters / pitchers |float64
-|theta                           |The angle of the spin axis with respect to it's movement between 0 and 90. A 0 angle means the spin axis is perpendicular to it's movement (it's all 'useful' spin with regards to the Magnus effect); 90 means the spin axis is parallel to it's direction (like a gyroball). Pitches |hitters / pitchers |float64
-|phi                             |The angle of the spin axis in the x-z plane oriented to the x-axis. More colloquially, the axis the ball is spinning from the catcher's eye. |hitters / pitchers |float64
-|bauer_units  |spin rate / velocity |hitters / pitchers |flaot64
-|is_strike  |if the result of the pitch is a strike 1 if not 0 |hitters / pitchers |int64
-|pitch_count   |balls and strikes combined |hitters / pitchers |object
-|swing_miss   |if the result of the pitch is a swing and miss 1 if not 0 |hitters / pitchers |flaot64
-|first_pitch_take | 1: if hitter took the first pitch 0: if hitter didn't take first pitch
-|first_pitch_swing |  1: if hitter swung at first pitch 0: if hitter took first pitch| hitters | float64
+|theta |The angle of the spin axis with respect to it's movement between 0 and 90. A 0 angle means the spin axis is perpendicular to it's movement (it's all 'useful' spin with regards to the Magnus effect); 90 means the spin axis is parallel to it's direction (like a gyroball).|hitters / pitchers |float64
+|phi |The angle of the spin axis in the x-z plane oriented to the x-axis. More colloquially, the axis the ball is spinning from the catcher's eye. |hitters / pitchers |float64
+|bauer_units  |Spin Rate / Velocity |hitters / pitchers |flaot64
+|is_strike  |1: If the result of the pitch is a strike 0: if not |hitters / pitchers |int64
+|pitch_count   |Balls and strikes combined |hitters / pitchers |object
+|swing_miss   |1: If the result of the pitch is a swing and miss 0: if not |hitters / pitchers |flaot64
+|first_pitch_take |1: If hitter took the first pitch 0: if hitter didn't take first pitch |hitters |float64
+|first_pitch_swing |1: If hitter swung at first pitch 0: if hitter took first pitch| hitters | float64
 |in_zone_take | 1: if hitter took a pitch in the zone 0: if hitter swung at strike/took ball| hitters | float64
-|out_of_zone_chase | 1: if hitter chased out of the zone 0: if hitter took pitch out of the zone |hitters | float64
+|out_of_zone_chase |1: If hitter chased out of the zone 0: if hitter took pitch out of the zone |hitters | float64
